@@ -16,7 +16,7 @@ function AddExternals() {
         console.log("jQuery already exists.")
     }
 }
-AddExternals();
+
 
 function updateStatusCallback(response) {
     if (response.status === 'connect') {
@@ -64,19 +64,45 @@ function getPagingData(graphEdge, action) {
         link = '';
     } finally {
         if (link.length == 0) return null;
+        var result;
+        $.getJSON(link)
+            .done(function(data) {
+                result = data;
+                console.log("[ OK ] GET Request to: " + link);
+            })
+            .fail(function(jqxhr, textError, error) {
+                let errorMessage = textError + ", " + error;
+                console.log("[FAIL] GET Request Error: " + errorMessage);
+                result = null;
+            })
 
-        return $.getJSON(link);
+        return result;
     }
 }
 
-// function fetchData( data, filter) {
-//     if (typeof data != Array)
-//         return null;
-//     data.forEach(function(element) {
-//         if (typeof element == Object) {
-//             for( const key of Object.keys(element)) {
+function fetchData(data, filter) {
+    if (typeof data != Array)
+        return null;
+    data.forEach(function(element) {
+        if (typeof element == Object) {
+            for (const key of Object.keys(element)) {
+                if (key === filter) {
+                    let result = removeStopWords(element[key]);
+                }
+            }
+        }
+    }, this);
+}
 
-//             }
-//         }
-//     }, this);
-// }
+function removeStopWords(element) {
+    var result = [];
+    var spilted = String.split(element, " ");
+    splited.forEach(function(word) {
+        stopWords.forEach(function(stopWord) {
+            if (stopWord !== word) {
+                result.push(word);
+            }
+        });
+    });
+    return result;
+}
