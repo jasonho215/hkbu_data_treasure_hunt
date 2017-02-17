@@ -2,6 +2,7 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="./helper.js"></script>
     <script src="./crawler_logic.js"></script>
     <!--<link rel="stylesheet" href="style.css" />-->
     <title>jQuery Example</title>
@@ -21,14 +22,13 @@
                 // $('#loginbutton,#feedbutton').removeAttr('disabled');
             });
         });
-        window.close(FB.logout())
     </script>
 </head>
 
 <body>
     <button id="login_btn" onclick="checkLoginState()">Login facebook first!</button>
     <!--<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true" onlogin="checkLoginState()"></div>-->
-    <div id="status"></div>
+    <pre id="status"></pre>
 </body>
 
 </html>

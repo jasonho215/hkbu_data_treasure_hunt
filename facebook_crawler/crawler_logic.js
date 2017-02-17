@@ -2,11 +2,31 @@
     Facebook authentication logic for this app. Please load JQuery before 
 */
 
-let appId = '217715905321401';
+let appId = '1113237095453404';
 let stopWords = [];
 
 function AddExternals() {
+
     if (typeof window.jQuery === 'function') {
+        printMessage(true, 'jQuery exists');
+        return;
+    }
+
+    let url = [
+        'https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'
+    ];
+    var prom = loadScript(url);
+
+    prom.then(function(response) {
+            printMessage(true, 'Added ' + response);
+        },
+        function(error) {
+            printMessage(false, 'Network Error : ' + error);
+        });
+    return;
+
+    /*
+    if (typeof window.jQuery !== 'function') {
         var jq = document.createElement("script");
         jq.type = "text/javascript";
         jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js";
@@ -15,19 +35,25 @@ function AddExternals() {
     } else {
         console.log("jQuery already exists.")
     }
+    */
 }
 
+function checkLoginState() {
+    FB.getLoginStatus(updateStatusCallback);
+}
 
 function updateStatusCallback(response) {
     if (response.status === 'connect') {
-        console.log("logged in, good");
+        printMessage(true, "Logged in.")
     } else {
         FB.login(function(response) {
             if (response.status === 'conneted') {
                 // Successfully logged in
+                printMessage(true, "Logged in.")
                 runAPI();
             } else if (response.status === 'not_authoried') {
                 //
+                printMessage(false, response.error.message)
             } else {
                 //
             }
@@ -36,24 +62,32 @@ function updateStatusCallback(response) {
 }
 
 function runAPI() {
-    FB.api('/me', APICallback);
+    FB.api('/me?fields=posts{description}', APICallback);
 }
 
 function APICallback(response) {
     if (response.error) {
         $('#status').html(response.error.message);
     }
-    $('#status').html('Thanks for logging in, ' + response.name + '!');
-}
 
-function checkLoginState() {
-    FB.getLoginStatus(updateStatusCallback);
+    var filteredResults = [];
+    var count = 0;
+    var tempResult = response.posts;
+    do {
+        filteredResults.push(fetchData(tempResult.data, 'description'));
+        count++;
+        getPagingData(tempResult, 'next').always(function(res) {
+            tempResult = res;
+            console.log(res);
+        });
+    } while (count < 10)
+    $('#status').html(JSON.stringify(filteredResults, null, 2));
 }
 
 function getPagingData(graphEdge, action) {
     if (typeof action !== 'string' || typeof graphEdge !== 'object') {
         return null;
-    } else if (!graphEdge.hasOwnProperty('paging') || action !== 'previous' || action !== 'next') {
+    } else if (!graphEdge.hasOwnProperty('paging')) {
         return null;
     }
     var link;
@@ -64,45 +98,47 @@ function getPagingData(graphEdge, action) {
         link = '';
     } finally {
         if (link.length == 0) return null;
-        var result;
-        $.getJSON(link)
+        return $.getJSON(link)
             .done(function(data) {
-                result = data;
-                console.log("[ OK ] GET Request to: " + link);
+                printMessage(true, "GET Request to: " + link);
+
             })
             .fail(function(jqxhr, textError, error) {
                 let errorMessage = textError + ", " + error;
-                console.log("[FAIL] GET Request Error: " + errorMessage);
-                result = null;
+                printMessage(false, "GET Request Error: " + errorMessage);
             })
-
-        return result;
     }
 }
 
 function fetchData(data, filter) {
-    if (typeof data != Array)
+    if (!Array.isArray(data)) {
         return null;
+    }
+
+    var results = [];
     data.forEach(function(element) {
-        if (typeof element == Object) {
+        if (typeof element == 'object') {
             for (const key of Object.keys(element)) {
                 if (key === filter) {
                     let result = removeStopWords(element[key]);
+                    results.push(result);
                 }
             }
         }
     }, this);
+    return results;
 }
 
 function removeStopWords(element) {
     var result = [];
-    var spilted = String.split(element, " ");
-    splited.forEach(function(word) {
+    var spilted = element.split(' ');
+    spilted.forEach(function(word) {
         stopWords.forEach(function(stopWord) {
-            if (stopWord !== word) {
-                result.push(word);
+            if (stopWord === word) {
+                return;
             }
         });
+        result.push(word);
     });
-    return result;
+    return result.join(' ');
 }
