@@ -2,6 +2,7 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="./config.js" />
     <script src="./helper.js"></script>
     <script src="./crawler_logic.js"></script>
     <!--<link rel="stylesheet" href="style.css" />-->
@@ -19,14 +20,15 @@
                     appId: appId,
                     version: 'v2.8' // or v2.1, v2.2, v2.3, ...
                 });
-                // $('#loginbutton,#feedbutton').removeAttr('disabled');
+                $('#login_btn').removeAttr('disabled');
             });
         });
     </script>
 </head>
 
 <body>
-    <button id="login_btn" onclick="checkLoginState()">Login facebook first!</button>
+    <button id="login_btn" onclick="checkLoginState()" disabled>Login facebook first!</button>
+    <button id="run_btn" onclick="runAPI()" disabled>Run the Program!!</button>
     <!--<div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true" onlogin="checkLoginState()"></div>-->
     <pre id="status"></pre>
 </body>

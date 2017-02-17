@@ -2,8 +2,11 @@
     Facebook authentication logic for this app. Please load JQuery before 
 */
 
-let appId = '1113237095453404';
-let stopWords = [];
+
+let messageCount = 0;
+const targetMessageNumber = 1000;
+let allFilteredMessage = [];
+
 
 function AddExternals() {
 
@@ -43,45 +46,68 @@ function checkLoginState() {
 }
 
 function updateStatusCallback(response) {
-    if (response.status === 'connect') {
-        printMessage(true, "Logged in.")
+    if (response.status === 'connected') {
+        printMessage(true, "Logged in.");
+        $('#run_btn').removeAttr('disabled');
+
     } else {
         FB.login(function(response) {
-            if (response.status === 'conneted') {
+            if (response.status === 'connected') {
+
                 // Successfully logged in
                 printMessage(true, "Logged in.")
-                runAPI();
+                $('#run_btn').removeAttr('disabled');
+
             } else if (response.status === 'not_authoried') {
-                //
+                // Not authorized for using this Facebook application
                 printMessage(false, response.error.message)
             } else {
-                //
+                // Other cases, should not be handled by this program
+                printMessage(false, response.error.message)
             }
-        }, { scope: 'public_profile,email,user_posts' });
+        }, { scope: tokenAccessRight.join(',') });
     }
 }
 
 function runAPI() {
-    FB.api('/me?fields=posts{description}', APICallback);
+    reset();
+    FB.api('me/posts?fields=description', APICallback);
 }
 
 function APICallback(response) {
+    recursiveGetData(response, function(message) {
+        $('#status').empty();
+        $('#status').html(message);
+    })
+}
+
+function recursiveGetData(response, howToDisaply) {
+    // Unexpected leaving condition.
     if (response.error) {
-        $('#status').html(response.error.message);
+        howToDisaply(response.error.message);
+        return;
     }
 
-    var filteredResults = [];
-    var count = 0;
-    var tempResult = response.posts;
-    do {
-        filteredResults.push(fetchData(tempResult.data, 'description'));
-        count++;
-        getPagingData(tempResult, 'next').always(function(res) {
-            tempResult = res;
-            console.log(res);
-        });
-    } while (count < 10)
-    $('#status').html(JSON.stringify(filteredResults, null, 2));
+    // Leave The function if I get enough message.
+    if (messageCount > targetMessageNumber) {
+        return;
+    }
+    // Some porcessing on the data from Facebook.
+    let dataArray = response.data;
+    let filteredResults = fetchData(dataArray, 'description')
+    messageCount += dataArray.length;;
+
+    // Aggregrate them to global variable.
+    allFilteredMessage = allFilteredMessage.concat(filteredResults);
+
+    // Display Output
+    howToDisaply(JSON.stringify(allFilteredMessage, null, 2));
+
+    // Recursively get the data again.
+    let handle = getPagingData(response, 'next');
+    if (handle) {
+        handle.always(recursiveGetData);
+    }
 }
 
 function getPagingData(graphEdge, action) {
@@ -141,4 +167,12 @@ function removeStopWords(element) {
         result.push(word);
     });
     return result.join(' ');
+}
+
+/**
+ * Reset all the variables for run the API again
+ */
+function reset() {
+    messageCount = 0;
+    allFilteredMessage.length = 0;
 }
