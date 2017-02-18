@@ -3,6 +3,8 @@ Client-side Facebook Graph API Fetcher
 ======
 This is a client-side fetcher for HKBU Data Treasure Hunt Competition.
 
+-----
+
 Prerequisite
 -----
 #### Works on Facebook Developer Website
@@ -17,12 +19,26 @@ Install the software in the following order
 2. [Visual Studio Code](https://code.visualstudio.com/Download) 
 3. npm package -- ``http-server``
 	4. Open Terminal for **Mac/ *Unix System** or Command Line Prompt for **Windows**
-	5. run ```npm install -g http-server``` in the terminal or command line prompt.
+	5. Run ```npm install -g http-server``` in the terminal or command line prompt.
 	6. Wait until the installation is finished, close the window afterwards.
 
-Customisation
+----------
+
+Modification
 -----
-To fit on different requirements and data structures, you have to modify the method APICallback in facebook_crawler/crawler_logic.js. For details and demo, see the comment in file.
+#### Open the project
+1. Open Visual Studio Code
+2. Open the project (Perform either one following routines)
+	3. **_For First Use:_**
+		4. In the Welcome Page, Click the ``Clone Git Repository`` which is under the tab ``Start``
+		4. Paste the Git repository link to the pop-up at the top of the window
+		5. Press Enter,  then select the location for storing the files in local machine.
+		6. Click Confirm/ OK button, then wait until the cloning is finished.
+	7. **_Reopen the files:_**
+		8. Click the Name of this Repository (hkbu_data_treasure_hunt) under the tab ``Recent``
+
+#### Methods that you have to make changes
+To fit on different requirements and data structures, you have to modify the method ``APICallback`` in _facebook_crawler/crawler_logic.js_. For details and demo, see the comments in file.
 
 Run the Program
 -----
@@ -32,6 +48,8 @@ Run the Program
 4. Open Browser and go to **http://localhost:8080** (If you do **not** use the default Port Number, change the Port Number **8080** to your Port Number)
 5. Click the "Login" button and finish the login process
 6. Click the "Run API !!!" button
+
+-----
 
 Notes and Reminder
 -----
