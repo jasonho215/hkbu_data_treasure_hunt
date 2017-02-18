@@ -37,7 +37,22 @@ Modification
 	7. **_Reopen the files:_**
 		8. Click the Name of this Repository (hkbu_data_treasure_hunt) under the tab ``Recent``
 
-#### Methods that you have to make changes
+#### Things that you have to make changes
+#####**Constants**
+In _facebook_crawler/config.js_, you have to modify:
+|	constant name	|	description	|
+|	--------:					|	:----------			|
+|	appId					|	The Facebook application ID listed on the Facebook Application Page **(MUST)** |
+|	stopWords			|	Words you want to filter out from the messages fetched from Facebook Graph API	|
+|	tokenAccessRight	|	Rights required for getting data. You can test on the Facebook Graph API Explorer first.	|
+|	targetMessageNumber	|	The maximum number of message that you want to collect	|
+
+In _facebook_crawler/crawler_logic.js_, you have to modify:
+|	constant name	|	description	|
+|	---------:					|	:----------			|
+|	apiPath				|	Facebook Graph API Path. You may test it in the Graph API Explorer and then copy request link field to replace	|
+
+##### **Method**
 To fit on different requirements and data structures, you have to modify the method ``APICallback`` in _facebook_crawler/crawler_logic.js_. For details and demo, see the comments in file.
 
 Run the Program
