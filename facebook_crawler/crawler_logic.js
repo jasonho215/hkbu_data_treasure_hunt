@@ -2,12 +2,17 @@
     Facebook authentication logic for this app. Please load JQuery before 
 */
 
-
+// Counter for collected and processed messages.
 let messageCount = 0;
-const targetMessageNumber = 1000;
+
+// Temp storage for processed messages.
 let allFilteredMessage = [];
 
+// Facebook Graph API Path. You may test it in the Graph API Explorer 
+// and then copy request link field to replace the value of this variable (qouted in single quotes)
+let apiPath = 'me/posts?fields=description'
 
+// Method for loading external scripts, no need to modify.
 function AddExternals() {
 
     if (typeof window.jQuery === 'function') {
@@ -41,10 +46,12 @@ function AddExternals() {
     */
 }
 
+// For Facebook Login, no need to modify.
 function checkLoginState() {
     FB.getLoginStatus(updateStatusCallback);
 }
 
+// For Facebook Login, no need to modify.
 function updateStatusCallback(response) {
     if (response.status === 'connected') {
         printMessage(true, "Logged in.");
@@ -69,18 +76,23 @@ function updateStatusCallback(response) {
     }
 }
 
+// Trigger for the fetching process.
 function runAPI() {
     reset();
-    FB.api('me/posts?fields=description', APICallback);
+    FB.api(apiPath, APICallback);
 }
 
+// Main Logic for fetching the data
+// You should modify this method based on the result tested in the Graph API Explorer.
 function APICallback(response) {
     recursiveGetData(response, function(message) {
+        // Works for showing the processed data.
         $('#status').empty();
         $('#status').html(message);
     })
 }
 
+// Recursively get data from facebook.
 function recursiveGetData(response, howToDisaply) {
     // Unexpected leaving condition.
     if (response.error) {
@@ -110,6 +122,7 @@ function recursiveGetData(response, howToDisaply) {
     }
 }
 
+// Get data based on the paging property of JSON returned by Facebook Graph API. No need to modify.
 function getPagingData(graphEdge, action) {
     if (typeof action !== 'string' || typeof graphEdge !== 'object') {
         return null;
@@ -136,6 +149,10 @@ function getPagingData(graphEdge, action) {
     }
 }
 
+// Get required field from JSON returned by Facebook Graph API.
+// parameters:
+//      data    ->  JSON returned
+//      filter  ->  Field that required and it will be filtered.
 function fetchData(data, filter) {
     if (!Array.isArray(data)) {
         return null;
@@ -155,6 +172,8 @@ function fetchData(data, filter) {
     return results;
 }
 
+// For removing unwanted words from string.
+// Can be modifed based on you own stragety, usually there is no need to modify it.
 function removeStopWords(element) {
     var result = [];
     var spilted = element.split(' ');
