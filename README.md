@@ -41,7 +41,7 @@ Modification
 #####**Constants**
 In _facebook_crawler/config.js_, you have to modify:
 |	constant name	|	description	|
-|	--------:					|	:----------			|
+|	---:					|	:---			|
 |	appId					|	The Facebook application ID listed on the Facebook Application Page **(MUST)** |
 |	stopWords			|	Words you want to filter out from the messages fetched from Facebook Graph API	|
 |	tokenAccessRight	|	Rights required for getting data. You can test on the Facebook Graph API Explorer first.	|
@@ -49,7 +49,7 @@ In _facebook_crawler/config.js_, you have to modify:
 
 In _facebook_crawler/crawler_logic.js_, you have to modify:
 |	constant name	|	description	|
-|	---------:					|	:----------			|
+|	---:					|	:---			|
 |	apiPath				|	Facebook Graph API Path. You may test it in the Graph API Explorer and then copy request link field to replace	|
 
 ##### **Method**
