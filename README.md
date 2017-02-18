@@ -45,7 +45,7 @@ Run the Program
 1. Open Terminal or Command Line Prompt
 2. Change Directory to facebook_crawler by ``cd facebook_crawler``
 3. Run the server by ``http-server .``
-4. Open Browser and go to **http://localhost:8080** (If you do **not** use the default Port Number, change the Port Number **8080** to your Port Number)
+4. Open Internet Browser (Preferred: Google Chrome) and go to **http://localhost:8080** (If you do **not** use the default Port Number, change the Port Number **8080** to your Port Number)
 5. Click the "Login" button and finish the login process
 6. Click the "Run API !!!" button
 
