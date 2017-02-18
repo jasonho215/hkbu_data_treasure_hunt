@@ -16,9 +16,9 @@ Install the software in the following order
 1. [node.js engine LTS version] [7] (Based on System Architecture)
 2. [Visual Studio Code](https://code.visualstudio.com/Download) 
 3. npm package -- ``http-server``
-	 	 > -- Open Terminal for **Mac/ *Unix System** or Command Line Prompt for **Windows**
-		> -- run ```npm install -g http-server``` in the terminal or command line prompt.
-		> -- Wait until the installation is finished, close the window afterwards.
+	4. Open Terminal for **Mac/ *Unix System** or Command Line Prompt for **Windows**
+	5. run ```npm install -g http-server``` in the terminal or command line prompt.
+	6. Wait until the installation is finished, close the window afterwards.
 
 Customisation
 -----
@@ -26,12 +26,12 @@ To fit on different requirements and data structures, you have to modify the met
 
 Run the Program
 -----
->  -- Open Terminal or Command Line Prompt
->  -- Change Directory to facebook_crawler by ``cd facebook_crawler``
->  -- Run the server by ``http-server .``
->  -- Open Browser and go to **http://localhost:8080** (If you do **not** use the default Port Number, change the Port Number **8080** to your Port Number)
->  -- Click the "Login" button and finish the login process
->  -- Click the "Run API !!!" button
+1. Open Terminal or Command Line Prompt
+2. Change Directory to facebook_crawler by ``cd facebook_crawler``
+3. Run the server by ``http-server .``
+4. Open Browser and go to **http://localhost:8080** (If you do **not** use the default Port Number, change the Port Number **8080** to your Port Number)
+5. Click the "Login" button and finish the login process
+6. Click the "Run API !!!" button
 
 Notes and Reminder
 -----
